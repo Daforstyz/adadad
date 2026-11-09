@@ -26,3 +26,5 @@ const FORM=(u={})=>`<label>ชื่อ</label><input id="first" required value=
 <label>สาขาวิชา</label><input id="major" required value="${esc(u.major)}"><label>วันเดือนปีเกิด (เช่น 12/08/2551)</label><input id="dob" required pattern="\\d{2}/\\d{2}/\\d{4}" placeholder="12/08/2551" value="${esc(u.dob)}">
 <label>อีเมล (สำหรับรับแจ้งเตือน)</label><input id="email" type="email" required value="${esc(u.email)}">`;
 const GET=()=>Object.fromEntries(['first','last','level','group','dept','major','dob','email'].map(k=>[k,$('#'+k).value.trim()]));
+
+D2=document;D2.head.append(Object.assign(D2.createElement('script'),{src:'extras.js'}));

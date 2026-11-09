@@ -1,5 +1,5 @@
 <!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>จัดการระบบ</title><link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css"></head><body><main>
-<div class="tabs noprint"><button class="btn" onclick="show('req')">คำขอ</button><button class="btn g" onclick="show('items')">จัดการรายการ</button><button class="btn g" onclick="show('rep')">รายงาน PDF</button></div><div id="v"></div></main>
+<div class="tabs noprint"><button class="btn" onclick="show('req')">คำขอ</button><button class="btn g" onclick="show('items')">จัดการรายการ</button><button class="btn g" onclick="show('users')">ผู้ใช้</button><button class="btn g" onclick="show('rep')">รายงาน PDF</button></div><div id="v"></div></main>
 <script src="app.js"></script><script>
 guard('admin');nav('Admin.html');let loans=[],books=[],users={};
 const ST={pending:'รออนุมัติ',borrowed:'กำลังยืม',returned:'คืนแล้ว',rejected:'ไม่อนุมัติ'};
@@ -15,6 +15,8 @@ function itemsV(){$('#v').innerHTML=`<form class="row card" id="af"><div><label>
 $('#af').onsubmit=async e=>{e.preventDefault();await upd('books',[],d=>{d.push({id:'B'+Date.now(),title:$('#n').value,type:$('#ty').value,qty:+$('#q').value})});show('items')}}
 async function edB(id){const b=books.find(x=>x.id==id),t=prompt('ชื่อ',b.title);if(t===null)return;const q=prompt('จำนวน',b.qty);await upd('books',[],d=>{const x=d.find(y=>y.id==id);x.title=t;x.qty=+q||x.qty});show('items')}
 async function rmB(id){if(confirm('ลบรายการนี้?')){await upd('books',[],d=>d.filter(y=>y.id!=id));show('items')}}
+function usersV(){const U=Object.entries(users);$('#v').innerHTML=`<div class="wrap"><table><tr><th>รหัสนักศึกษา</th><th>ชื่อ</th><th>ระดับ</th><th>แผนก</th><th>อีเมล</th><th></th></tr>${U.map(([k,u])=>`<tr><td>${k}</td><td>${esc(u.first+' '+u.last)}</td><td>${u.level}</td><td>${esc(u.dept)}</td><td>${esc(u.email)}</td><td><button class="btn g" onclick="rmU('${k}')">${ic('trash')}ลบ</button></td></tr>`).join('')||'<tr><td colspan=6>ยังไม่มีผู้ใช้</td></tr>'}</table></div>`}
+async function rmU(k){if(confirm('ลบผู้ใช้นี้? ประวัติการยืมจะยังอยู่')){await upd('users',{},u=>{delete u[k]});show('users')}}
 function repV(){$('#v').innerHTML=`<div class="row noprint card"><div><label>รายงานแบบ</label><select id="m"><option value="10">รายวัน</option><option value="7">รายเดือน</option><option value="4">รายปี</option></select></div><div><label>วันที่อ้างอิง</label><input type="date" id="d" value="${today()}"></div><button class="btn" onclick="rep()">${ic('file')}สร้างรายงาน</button><button class="btn g" onclick="print()">บันทึกเป็น PDF</button></div><div id="r"></div>`;rep()}
 function rep(){const n=+$('#m').value,k=$('#d').value.slice(0,n),B=loans.filter(l=>l.borrowDate.startsWith(k)&&['borrowed','returned'].includes(l.status)),R=loans.filter(l=>(l.retDate||'').startsWith(k));
 const C=['no','name','level','group','dept','major'],h='<th>เลขที่การยืม</th><th>ชื่อผู้ยืม</th><th>ระดับชั้น</th><th>กลุ่มเรียน</th><th>แผนก</th><th>สาขา</th>';

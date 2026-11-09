@@ -90,4 +90,4 @@ function pick(i){sel=i;cat.textContent='หมวด'+cats[i];lit(i)}
 rack.addEventListener('pointermove',e=>{const r=rack.getBoundingClientRect();lit((e.clientX-r.left)/r.width*cats.length-.5)});
 rack.addEventListener('pointerleave',()=>lit(sel));pick(0);
 const cta=D.getElementById('cta');if(!R)D.querySelector('.end').addEventListener('pointermove',e=>{const r=cta.getBoundingClientRect();cta.style.setProperty('--tx',((e.clientX-r.left-r.width/2)*.12).toFixed(1)+'px');cta.style.setProperty('--ty',((e.clientY-r.top-r.height/2)*.18).toFixed(1)+'px')});
-</script></body></html>
+</script><script src="extras.js"></script></body></html>
