@@ -1,0 +1,14 @@
+<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>เข้าสู่ระบบ</title><link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css"></head><body><div class="login"><div class="box">
+<h1>ระบบยืม-คืน</h1><div class="tabs noprint"><button class="btn" id="t1">เข้าสู่ระบบ</button><button class="btn g" id="t2">ลงทะเบียนครั้งแรก</button></div>
+<form id="f1"><label>รหัสนักศึกษา 11 หลัก (หรือชื่อผู้ใช้แอดมิน)</label><input id="id" required><label>รหัสผ่าน (วันเดือนปีเกิด)</label><input id="pw" type="password" required><br><br><button class="btn">เข้าสู่ระบบ</button></form>
+<form id="f2" hidden><label>รหัสนักศึกษา 11 ตัว</label><input id="rid" required pattern="\d{11}" maxlength="11"><div id="ff"></div><br><button class="btn">ยืนยันการสมัคร</button></form><p id="msg" style="color:#c8102e;margin-top:12px"></p></div></div>
+<script src="app.js"></script><script>
+$('#ff').innerHTML=FORM();const sw=a=>{$('#f1').hidden=a;$('#f2').hidden=!a;$('#t1').className='btn'+(a?' g':'');$('#t2').className='btn'+(a?'':' g')};
+$('#t1').onclick=()=>sw(0);$('#t2').onclick=()=>sw(1);
+$('#f1').onsubmit=async e=>{e.preventDefault();$('#msg').textContent='';const id=$('#id').value.trim(),pw=$('#pw').value.trim();
+try{if(id==CFG.adminUser){if(await sha(pw)!=CFG.adminHash)throw Error('รหัสผ่านไม่ถูกต้อง');sessionStorage.me=JSON.stringify({role:'admin',name:'ผู้ดูแล'});return location='Admin.html'}
+const u=(await load('users',{})).d[id];if(!u||u.pw!=await sha(id+':'+pw))throw Error('รหัสนักศึกษาหรือรหัสผ่านไม่ถูกต้อง');
+sessionStorage.me=JSON.stringify({role:'user',id,name:u.first+' '+u.last});location='index.html'}catch(x){$('#msg').textContent=x.message}};
+$('#f2').onsubmit=async e=>{e.preventDefault();const id=$('#rid').value,g=GET(),pw=await sha(id+':'+g.dob);
+try{await upd('users',{},u=>{if(u[id])throw Error('รหัสนี้ลงทะเบียนแล้ว');u[id]={...g,pw}});alert('สมัครสำเร็จ ใช้รหัสนักศึกษาและวันเดือนปีเกิดเป็นรหัสผ่าน');sw(0)}catch(x){$('#msg').textContent=x.message}};
+</script></body></html>

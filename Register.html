@@ -1,0 +1,7 @@
+<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>โปรไฟล์</title><link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css"></head><body><main style="max-width:520px"><h1>แก้ไขโปรไฟล์</h1><form class="card" id="f">กำลังโหลด...</form></main>
+<script src="app.js"></script><script>
+const m=guard('user');nav('Register.html');
+load('users',{}).then(({d})=>{$('#f').innerHTML=`<label>รหัสนักศึกษา</label><input value="${m.id}" disabled>${FORM(d[m.id])}<br><br><button class="btn">${ic('check')}บันทึก</button>`});
+$('#f').onsubmit=async e=>{e.preventDefault();const g=GET(),pw=await sha(m.id+':'+g.dob);
+try{await upd('users',{},u=>{u[m.id]={...u[m.id],...g,pw}});sessionStorage.me=JSON.stringify({...m,name:g.first+' '+g.last});alert('บันทึกแล้ว')}catch(x){alert(x.message)}};
+</script></body></html>

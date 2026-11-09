@@ -1,0 +1,13 @@
+<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ยืม-คืน</title><link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css"></head><body><main>
+<section class="hero"><h1 id="hi"></h1><label style="color:#f4d7db">วันที่ต้องการคืน</label><input type="date" id="due" style="max-width:220px"></section>
+<div class="grid" id="g">กำลังโหลด...</div></main>
+<script src="app.js"></script><script>
+const m=guard('user');nav('index.html');$('#hi').textContent='สวัสดี '+m.name;
+const t=new Date();t.setDate(t.getDate()+7);$('#due').value=t.toISOString().slice(0,10);let items=[];
+async function init(){items=(await load('books',[])).d;const loans=(await load('loans',[])).d;
+$('#g').innerHTML=items.map(i=>{const left=i.qty-loans.filter(l=>l.itemId==i.id&&['pending','borrowed'].includes(l.status)).length;
+return `<div class="card">${ic('book')}<h3>${esc(i.title)}</h3><p>${esc(i.type||'')}</p><span class="tag ${left>0?'ok':''}">เหลือ ${left}</span><br><br><button class="btn" ${left<1?'disabled':''} onclick="req('${i.id}')">${ic('plus')}ขอยืม</button></div>`}).join('')||'ยังไม่มีรายการ'}
+async function req(id){const i=items.find(x=>x.id==id),u=(await load('users',{})).d[m.id];
+try{await upd('loans',[],d=>{d.push({no:'L'+String(d.length+1).padStart(4,'0'),uid:m.id,name:u.first+' '+u.last,level:u.level,group:u.group,dept:u.dept,major:u.major,item:i.title,itemId:i.id,borrowDate:today(),due:$('#due').value,status:'pending'})});alert('ส่งคำขอแล้ว รอแอดมินอนุมัติ');init()}catch(e){alert(e.message)}}
+init().catch(e=>$('#g').textContent=e.message);
+</script></body></html>
