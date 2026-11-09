@@ -1,13 +1,26 @@
-<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ยืม-คืน</title><link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css"></head><body><main>
-<section class="hero"><h1 id="hi"></h1><label style="color:#f4d7db">วันที่ต้องการคืน</label><input type="date" id="due" style="max-width:220px"></section>
-<div class="grid" id="g">กำลังโหลด...</div></main>
+<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#6b1220"><title>ยืม-คืน</title><link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css"></head><body><main>
+<section class="hero"><small>ยินดีต้อนรับ</small><h1 id="hi"></h1><div class="pills" id="st"></div>
+<div class="due"><input type="date" id="due" aria-label="วันที่ต้องการคืน"><span id="dueTh"></span></div></section>
+<div class="bar2"><input id="q" type="search" placeholder="ค้นหาชื่อรายการ"><div id="chips" class="tabs" style="margin:0"></div></div>
+<div class="grid" id="g"><div class="card sk"></div><div class="card sk"></div><div class="card sk"></div></div></main>
 <script src="app.js"></script><script>
-const m=guard('user');nav('index.html');$('#hi').textContent='สวัสดี '+m.name;
-const t=new Date();t.setDate(t.getDate()+7);$('#due').value=t.toISOString().slice(0,10);let items=[];
-async function init(){items=(await load('books',[])).d;const loans=(await load('loans',[])).d;
-$('#g').innerHTML=items.map(i=>{const left=i.qty-loans.filter(l=>l.itemId==i.id&&['pending','borrowed'].includes(l.status)).length;
-return `<div class="card">${ic('book')}<h3>${esc(i.title)}</h3><p>${esc(i.type||'')}</p><span class="tag ${left>0?'ok':''}">เหลือ ${left}</span><br><br><button class="btn" ${left<1?'disabled':''} onclick="req('${i.id}')">${ic('plus')}ขอยืม</button></div>`}).join('')||'ยังไม่มีรายการ'}
-async function req(id){const i=items.find(x=>x.id==id),u=(await load('users',{})).d[m.id];
-try{await upd('loans',[],d=>{d.push({no:'L'+String(d.length+1).padStart(4,'0'),uid:m.id,name:u.first+' '+u.last,level:u.level,group:u.group,dept:u.dept,major:u.major,item:i.title,itemId:i.id,borrowDate:today(),due:$('#due').value,status:'pending'})});alert('ส่งคำขอแล้ว รอแอดมินอนุมัติ');init()}catch(e){alert(e.message)}}
+const m=guard('user');nav('index.html');$('#hi').textContent=m.name;
+const d=new Date();d.setDate(d.getDate()+7);$('#due').value=d.toISOString().slice(0,10);$('#due').min=today();
+const showDue=()=>$('#dueTh').textContent='คืนวันที่ '+th($('#due').value);$('#due').onchange=showDue;showDue();
+let items=[],loans=[],cat='ทั้งหมด',q='';
+const left=i=>i.qty-loans.filter(l=>l.itemId==i.id&&['pending','borrowed'].includes(l.status)).length;
+const toast=t=>{const e=document.createElement('div');e.className='toast';e.textContent=t;document.body.append(e);setTimeout(()=>e.remove(),2800)};
+function draw(){const mine=loans.filter(l=>l.uid==m.id),n=s=>mine.filter(l=>l.status==s).length;
+$('#st').innerHTML=`<span class="pill">กำลังยืม ${n('borrowed')}</span><span class="pill">รออนุมัติ ${n('pending')}</span>`;
+const cats=['ทั้งหมด',...new Set(items.map(i=>i.type).filter(Boolean))];
+$('#chips').innerHTML=cats.map(c=>`<button class="chip ${c==cat?'on':''}" data-c="${esc(c)}">${esc(c)}</button>`).join('');
+document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{cat=b.dataset.c;draw()});
+const L=items.filter(i=>(cat=='ทั้งหมด'||i.type==cat)&&i.title.toLowerCase().includes(q));
+$('#g').innerHTML=L.map((i,k)=>{const l=left(i),p=Math.max(0,Math.round(l/i.qty*100));
+return `<article class="card it" style="--d:${k*50}ms"><div class="tile">${ic('book')}</div><h3>${esc(i.title)}</h3><p class="mut">${esc(i.type||'ทั่วไป')}</p><div class="bar"><i style="width:${p}%"></i></div><div class="meta">เหลือ ${l} จาก ${i.qty}</div><button class="btn full" ${l<1?'disabled':''} onclick="req('${i.id}',this)">${ic('plus')}${l<1?'หมดชั่วคราว':'ขอยืม'}</button></article>`}).join('')||'<p class="mut">ไม่พบรายการ</p>'}
+$('#q').oninput=e=>{q=e.target.value.trim().toLowerCase();draw()};
+async function init(){[items,loans]=(await Promise.all([load('books',[]),load('loans',[])])).map(x=>x.d);draw()}
+async function req(id,b){const i=items.find(x=>x.id==id);b.disabled=true;
+try{const u=(await load('users',{})).d[m.id];await upd('loans',[],d=>{d.push({no:'L'+String(d.length+1).padStart(4,'0'),uid:m.id,name:u.first+' '+u.last,level:u.level,group:u.group,dept:u.dept,major:u.major,item:i.title,itemId:i.id,borrowDate:today(),due:$('#due').value,status:'pending'})});toast('ส่งคำขอแล้ว รอแอดมินอนุมัติ');await init()}catch(e){toast(e.message);b.disabled=false}}
 init().catch(e=>$('#g').textContent=e.message);
 </script></body></html>
