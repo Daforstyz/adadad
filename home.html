@@ -1,0 +1,93 @@
+<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#12060a"><title>ห้องสมุด วิทยาลัยเทคนิคพัทลุง</title>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#12060a;--bg2:#1c0b12;--ink:#f6eeee;--mut:#c9abb0;--red:#ff3d58;--wine:#8b1a2b;--p:0;--f:0;--mx:0;--my:0}
+*{box-sizing:border-box;margin:0}html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:Prompt,'Noto Sans Thai',sans-serif;line-height:1.7;overflow-x:hidden}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;opacity:.07;z-index:20;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.8'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+a{color:inherit;text-decoration:none}
+.nv{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;justify-content:space-between;align-items:center;padding:16px 6vw;background:linear-gradient(rgba(18,6,10,.85),transparent)}
+.nv b{font-weight:600;letter-spacing:.02em}
+.nv a{border:1px solid rgba(246,238,238,.35);border-radius:99px;padding:8px 20px;font-size:.9rem;transition:.2s}.nv a:hover{background:var(--ink);color:var(--bg)}
+.eye{color:var(--mut);font-size:.85rem;letter-spacing:.18em;margin-bottom:16px}
+.btn{display:inline-block;background:var(--red);color:var(--bg);font-weight:600;border-radius:99px;padding:14px 30px;transition:transform .2s,box-shadow .3s;box-shadow:0 14px 40px -12px rgba(255,61,88,.7)}
+.btn:hover{transform:translate(var(--tx,0),var(--ty,0)) scale(1.04)}
+/* hero: camera flies down the aisle */
+.hero{height:190vh}.pin{position:sticky;top:0;height:100vh;overflow:hidden}
+.stage{position:absolute;inset:0;perspective:800px;background:radial-gradient(70% 60% at 50% 100%,#3a0c18,var(--bg))}
+.world{position:absolute;inset:0;transform-style:preserve-3d;transform:translateZ(calc(var(--p)*640px)) rotateX(calc(var(--my)*3deg)) rotateY(calc(var(--mx)*4deg))}
+.row{position:absolute;left:-12%;right:-12%;bottom:calc(5vh + var(--r)*9vh);display:flex;gap:6px;align-items:flex-end;justify-content:center;transform:translateZ(var(--z));filter:blur(var(--b));border-bottom:2px solid rgba(255,61,88,.35);opacity:calc(1 - var(--r)*.13)}
+.row:first-child{opacity:calc(1 - var(--p)*1.8)}
+.row i{flex:none;width:var(--w);height:var(--h);background:var(--c);border-radius:3px 3px 1px 1px;box-shadow:inset 3px 0 0 rgba(255,255,255,.1),inset -3px 0 0 rgba(0,0,0,.28)}
+.row i::after{content:"";display:block;margin:14% auto 0;width:60%;height:3px;background:rgba(255,255,255,.32);box-shadow:0 8px 0 rgba(255,255,255,.18)}
+.stage::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 60% 55% at 28% 50%,rgba(18,6,10,.88),transparent 75%)}
+.copy{position:absolute;inset:0;z-index:2;display:grid;align-content:center;padding:0 6vw;opacity:calc(1 - var(--p)*2.1);transform:translateY(calc(var(--p)*-50px));filter:blur(calc(var(--p)*8px))}
+h1{font-size:clamp(2.6rem,8.5vw,7rem);line-height:1.18;font-weight:600;letter-spacing:-.03em}h1 em{font-style:normal;color:var(--red)}
+.copy p{max-width:34ch;color:var(--mut);margin:20px 0 32px;font-size:1.1rem}
+/* chapters: the scroll advances the argument */
+.flow{height:340vh;background:linear-gradient(var(--bg),var(--bg2) 18%,var(--bg2) 82%,var(--bg))}
+.flow .pin{display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:5vw;padding:0 6vw}
+.tabs2{display:flex;gap:20px;margin-bottom:28px}.tabs2 span{color:#7d5f65;transition:.4s;font-weight:600}
+.steps{position:relative;height:260px}
+.steps article{position:absolute;inset:0;opacity:0;transform:translateY(28px);filter:blur(6px);transition:.6s}
+h2{font-size:clamp(1.9rem,5vw,3.6rem);line-height:1.25;font-weight:600;letter-spacing:-.02em}
+.steps p{color:var(--mut);margin-top:14px;max-width:40ch;font-size:1.05rem}
+#pin[data-i="0"] article:nth-child(1),#pin[data-i="1"] article:nth-child(2),#pin[data-i="2"] article:nth-child(3){opacity:1;transform:none;filter:none}
+#pin[data-i="0"] .tabs2 span:nth-child(1),#pin[data-i="1"] .tabs2 span:nth-child(2),#pin[data-i="2"] .tabs2 span:nth-child(3){color:var(--red)}
+.rail{height:3px;background:#3a1a22;border-radius:9px;max-width:420px;margin-top:20px}.rail i{display:block;height:100%;width:calc(var(--f)*100%);background:var(--red);border-radius:9px}
+.vis{position:relative;aspect-ratio:1;max-width:420px;justify-self:center;width:100%}
+.vis svg{position:absolute;inset:0;width:100%;height:100%;fill:none;stroke:var(--ink);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.vis .ico{opacity:0;transform:scale(.85);transition:.6s;transform-origin:center}
+#pin[data-i="0"] .ico:nth-of-type(1),#pin[data-i="1"] .ico:nth-of-type(2),#pin[data-i="2"] .ico:nth-of-type(3){opacity:1;transform:none}
+.ring{stroke:var(--red);stroke-width:3;stroke-dasharray:628;stroke-dashoffset:calc(628 - var(--f)*628);transform:rotate(-90deg);transform-origin:center}
+/* signature: pull a spine off the shelf */
+.shelf{padding:18vh 6vw 14vh;text-align:center;background:var(--bg)}
+.shelf p{color:var(--mut);margin:12px auto 0;max-width:46ch}
+.wrap{margin-top:48px;border-bottom:3px solid rgba(255,61,88,.45);box-shadow:0 22px 40px -26px var(--red)}
+.rack{display:flex;justify-content:center;gap:6px;perspective:1300px;height:400px;align-items:flex-end;padding:70px 4vw 0;overflow-x:auto}
+.sp{flex:none;width:62px;height:calc(240px + var(--h)*1px);background:var(--c);border:0;border-radius:4px 4px 2px 2px;color:var(--ink);font:600 .95rem Prompt,sans-serif;writing-mode:vertical-rl;padding:18px 0;cursor:pointer;box-shadow:inset 3px 0 0 rgba(255,255,255,.14),inset -4px 0 0 rgba(0,0,0,.3);transform:translateZ(calc(var(--d,0)*160px)) translateY(calc(var(--d,0)*-28px));transition:transform .25s ease-out,filter .25s;filter:brightness(calc(.72 + var(--d,0)*.45))}
+.read{margin-top:32px;display:flex;gap:20px;justify-content:center;align-items:center;flex-wrap:wrap}.read b{font-size:1.4rem}
+/* close */
+.end{text-align:center;padding:24vh 6vw 18vh;background:radial-gradient(60% 90% at 50% 100%,var(--wine),var(--bg))}
+.end p{color:var(--mut);margin:16px 0 36px}.end .btn{font-size:1.2rem;padding:18px 44px}
+footer{padding:28px 6vw;color:var(--mut);font-size:.85rem;text-align:center;background:var(--bg)}
+@media(max-width:800px){.flow .pin{grid-template-columns:1fr;align-content:center;gap:12px}.vis{order:-1;max-width:200px}.steps{height:230px}.sp{width:52px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head><body>
+<nav class="nv"><b>ห้องสมุด วิทยาลัยเทคนิคพัทลุง</b><a href="login.html">เข้าสู่ระบบ</a></nav>
+<header class="hero" id="hero"><div class="pin"><div class="stage"><div class="world" id="world"></div></div>
+<div class="copy"><p class="eye" style="margin:0 0 16px">ยืมหนังสือออนไลน์</p><h1>ความรู้ทั้งห้องสมุด<br><em>อยู่ในมือคุณ</em></h1><p>ขอยืมจากมือถือ รับอีเมลเมื่ออนุมัติ แล้วมารับเล่มจริงที่ห้องสมุด</p><div><a class="btn" href="login.html">เริ่มยืมเลย</a></div></div></div></header>
+<section class="flow" id="flow"><div class="pin" id="pin" data-i="0"><div><div class="tabs2"><span>ขอยืม</span><span>อนุมัติ</span><span>คืน</span></div>
+<div class="steps"><article><h2>เลือกเล่มที่ใช่<br>แล้วกดขอยืม</h2><p>ค้นหาชื่อหรือกรองตามหมวด ระบบบอกทันทีว่าเหลือกี่เล่ม</p></article>
+<article><h2>แอดมินอนุมัติ<br>อีเมลถึงคุณ</h2><p>เลขที่การยืม วันยืม และวันคืน ส่งเข้าอีเมลของคุณทันที</p></article>
+<article><h2>รับเล่มจริง<br>คืนตามกำหนด</h2><p>คืนที่ห้องสมุด แอดมินกดรับคืน คุณได้อีเมลยืนยันอีกครั้ง</p></article></div>
+<div class="rail"><i></i></div></div>
+<div class="vis"><svg viewBox="0 0 240 240"><circle cx="120" cy="120" r="100" stroke="#3a1a22" stroke-width="3"/><circle class="ring" cx="120" cy="120" r="100"/></svg>
+<svg class="ico" viewBox="0 0 24 24" style="padding:30%"><path d="M4 4h12a4 4 0 014 4v13H8a4 4 0 01-4-4zM4 17a4 4 0 014-4h12"/></svg>
+<svg class="ico" viewBox="0 0 24 24" style="padding:30%"><path d="M5 12l5 5 9-10"/></svg>
+<svg class="ico" viewBox="0 0 24 24" style="padding:30%"><path d="M9 14L4 9l5-5M4 9h10a6 6 0 010 12h-3"/></svg></div></div></section>
+<section class="shelf"><p class="eye">ชั้นหนังสือ</p><h2>ลองหยิบดูสักเล่ม</h2><p>เลื่อนเมาส์ไปตามสันหนังสือ แล้วเล่มที่ใกล้ที่สุดจะเลื่อนออกมาหาคุณ</p>
+<div class="wrap"><div class="rack" id="rack"></div></div>
+<div class="read"><b id="cat"></b><a class="btn" href="login.html">ยืมเล่มในหมวดนี้</a></div></section>
+<section class="end"><h2>เล่มต่อไปของคุณ<br>รออยู่แล้ว</h2><p>ลงทะเบียนครั้งแรกด้วยรหัสนักศึกษา 11 หลัก</p><a class="btn" id="cta" href="login.html">เปิดบัตรสมาชิก</a></section>
+<footer>ห้องสมุด วิทยาลัยเทคนิคพัทลุง</footer>
+<script>
+const D=document,E=D.documentElement.style,R=matchMedia('(prefers-reduced-motion:reduce)').matches,mob=innerWidth<720,cl=v=>Math.min(1,Math.max(0,v));
+const pal=['#7a1626','#9b1c31','#5a0f1b','#b3122d','#e9dcdd','#2a1116','#44121c'],rd=(a,b)=>a+Math.random()*(b-a);
+const W=D.getElementById('world');
+for(let r=0;r<(mob?3:5);r++){const row=D.createElement('div');row.className='row';row.style.cssText=`--r:${r};--z:${-r*260}px;--b:${r?0:3}px`;
+for(let k=0;k<(mob?16:34);k++){const s=D.createElement('i');s.style.cssText=`--w:${rd(22,50)}px;--h:${rd(120,250)}px;--c:${pal[Math.random()*pal.length|0]}`;row.append(s)}W.append(row)}
+const hero=D.getElementById('hero'),flow=D.getElementById('flow'),pin=D.getElementById('pin');
+function upd(){const p=R?0:cl(scrollY/(hero.offsetHeight-innerHeight)),f=cl(-flow.getBoundingClientRect().top/(flow.offsetHeight-innerHeight));
+E.setProperty('--p',p.toFixed(3));E.setProperty('--f',f.toFixed(3));pin.dataset.i=Math.min(2,f*3|0)}
+let t;addEventListener('scroll',()=>{t||(t=requestAnimationFrame(()=>{t=0;upd()}))},{passive:true});upd();
+if(!R)addEventListener('pointermove',e=>{E.setProperty('--mx',(e.clientX/innerWidth*2-1).toFixed(3));E.setProperty('--my',(e.clientY/innerHeight*2-1).toFixed(3))},{passive:true});
+const cats=['ช่างยนต์','ไฟฟ้ากำลัง','อิเล็กทรอนิกส์','ก่อสร้าง','บัญชี','การตลาด','คอมพิวเตอร์ธุรกิจ','ภาษาอังกฤษ','นวนิยาย','วิทยาศาสตร์'];
+const rack=D.getElementById('rack'),cat=D.getElementById('cat');let sel=0;
+const sp=cats.map((c,i)=>{const b=D.createElement('button');b.className='sp';b.textContent=c;b.style.cssText=`--h:${(i*37)%60};--c:${pal[i%4]}`;b.onclick=b.onfocus=()=>pick(i);rack.append(b);return b});
+const lit=x=>sp.forEach((b,i)=>b.style.setProperty('--d',Math.max(0,1-Math.abs(i-x)/2.2).toFixed(2)));
+function pick(i){sel=i;cat.textContent='หมวด'+cats[i];lit(i)}
+rack.addEventListener('pointermove',e=>{const r=rack.getBoundingClientRect();lit((e.clientX-r.left)/r.width*cats.length-.5)});
+rack.addEventListener('pointerleave',()=>lit(sel));pick(0);
+const cta=D.getElementById('cta');if(!R)D.querySelector('.end').addEventListener('pointermove',e=>{const r=cta.getBoundingClientRect();cta.style.setProperty('--tx',((e.clientX-r.left-r.width/2)*.12).toFixed(1)+'px');cta.style.setProperty('--ty',((e.clientY-r.top-r.height/2)*.18).toFixed(1)+'px')});
+</script></body></html>
