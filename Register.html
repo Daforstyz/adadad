@@ -1,7 +1,12 @@
-<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>โปรไฟล์</title><link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css"></head><body><main style="max-width:520px"><h1>แก้ไขโปรไฟล์</h1><form class="card" id="f">กำลังโหลด...</form></main>
+<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#12060a"><title>โปรไฟล์</title><link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css"></head><body><main><h1>โปรไฟล์ของคุณ</h1><div class="two-c">
+<div class="idc" id="idc" data-tilt><span class="idh">ห้องสมุด วิทยาลัยเทคนิคพัทลุง</span><div class="ida" id="c_a">?</div><b id="c_n"></b><p id="c_l"></p><p id="c_d"></p><p id="c_m"></p><code id="c_i"></code><small id="c_e"></small></div>
+<form class="card" id="f">กำลังโหลด...</form></div></main>
 <script src="app.js"></script><script>
-const m=guard('user');nav('Register.html');
-load('users',{}).then(({d})=>{$('#f').innerHTML=`<label>รหัสนักศึกษา</label><input value="${m.id}" disabled>${FORM(d[m.id])}<br><br><button class="btn">${ic('check')}บันทึก</button>`});
+const m=guard('user');nav('Register.html');$('#c_i').textContent=m.id.replace(/(\d{4})(\d{4})(\d{3})/,'$1 $2 $3');
+function sync(){const g=GET();$('#c_n').textContent=(g.first+' '+g.last).trim()||'ชื่อ นามสกุล';$('#c_l').textContent=g.level+(g.group?' · '+g.group:'');$('#c_d').textContent=g.dept||'แผนกวิชา';$('#c_m').textContent=g.major||'สาขาวิชา';$('#c_a').textContent=(g.first||'?')[0];$('#c_e').textContent=g.email||''}
+load('users',{}).then(({d})=>{$('#f').innerHTML=`<label>รหัสนักศึกษา</label><input value="${m.id}" disabled>${FORM(d[m.id])}<br><br><button class="btn">${ic('check')}บันทึก</button>`;sync()}).catch(e=>$('#f').textContent=e.message);
+$('#f').addEventListener('input',()=>$('#first')&&sync());
 $('#f').onsubmit=async e=>{e.preventDefault();const g=GET(),pw=await sha(m.id+':'+g.dob);
-try{await upd('users',{},u=>{u[m.id]={...u[m.id],...g,pw}});sessionStorage.me=JSON.stringify({...m,name:g.first+' '+g.last});alert('บันทึกแล้ว')}catch(x){alert(x.message)}};
+try{await upd('users',{},u=>{u[m.id]={...u[m.id],...g,pw}});sessionStorage.me=JSON.stringify({...m,name:g.first+' '+g.last});const c=$('#idc');c.classList.remove('stamp');void c.offsetWidth;c.classList.add('stamp');
+const t=document.createElement('div');t.className='toast';t.textContent='บันทึกแล้ว';document.body.append(t);setTimeout(()=>t.remove(),2500)}catch(x){alert(x.message)}};
 </script></body></html>

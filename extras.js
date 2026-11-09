@@ -50,3 +50,11 @@ p.querySelector('form').onsubmit=e=>{e.preventDefault();send(inp.value);inp.valu
 const tog=o=>{p.classList.toggle('o',o);if(o){if(!M.children.length)add('สวัสดีครับ ผมช่วยตอบเรื่องการยืม คืน ลงทะเบียน และค้นหาหนังสือได้ ลองกดหัวข้อด้านล่างหรือพิมพ์ถามได้เลย','b');inp.focus()}};
 b.onclick=()=>tog(!p.classList.contains('o'));p.querySelector('.ch button').onclick=()=>tog(0);addEventListener('keydown',e=>e.key=='Escape'&&tog(0));
 })();
+(()=>{const D=document,R=matchMedia('(prefers-reduced-motion:reduce)').matches;
+D.addEventListener('pointermove',e=>{if(R||e.pointerType=='touch')return;const t=e.target.closest&&e.target.closest('[data-tilt]');if(!t)return;const r=t.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height,s=t.style;
+s.setProperty('--ry',((x-.5)*14).toFixed(1)+'deg');s.setProperty('--rx',((.5-y)*14).toFixed(1)+'deg');s.setProperty('--gx',x*100+'%');s.setProperty('--gy',y*100+'%');s.setProperty('--lz','14px')});
+D.addEventListener('pointerout',e=>{const t=e.target.closest&&e.target.closest('[data-tilt]');if(t&&!t.contains(e.relatedTarget))['--rx','--ry','--lz'].forEach(k=>t.style.removeProperty(k))});
+window.countUp=(el,to)=>{if(R){el.textContent=to;return}const t0=performance.now();(function f(t){const k=Math.min(1,(t-t0)/800);el.textContent=Math.round(to*(1-Math.pow(1-k,3)));k<1&&requestAnimationFrame(f)})(t0)};
+window.flyBook=(a,b)=>{if(R||!a||!b)return;const s=a.getBoundingClientRect(),t=b.getBoundingClientRect(),e=D.createElement('div'),dx=t.left+t.width/2-s.left-s.width/2,dy=t.top-s.top;e.className='fly';e.style.cssText=`left:${s.left+s.width/2-16}px;top:${s.top}px`;D.body.append(e);
+e.animate([{transform:'none',opacity:1},{transform:`translate(${dx/2}px,${dy/2-140}px) rotate(200deg) scale(1.3)`,opacity:1,offset:.5},{transform:`translate(${dx}px,${dy}px) rotate(380deg) scale(.3)`,opacity:.3}],{duration:900,easing:'cubic-bezier(.5,0,.3,1)'}).onfinish=()=>{e.remove();b.animate([{transform:'scale(1)'},{transform:'scale(1.4)'},{transform:'scale(1)'}],{duration:350})}};
+})();

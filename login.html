@@ -1,14 +1,16 @@
-<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>เข้าสู่ระบบ</title><link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css"></head><body><div class="login"><div class="box">
-<a href="index.html" class="mut">← หน้าแรก</a><h1 style="margin-top:6px">เข้าสู่ระบบ</h1><div class="tabs noprint"><button class="btn" id="t1">เข้าสู่ระบบ</button><button class="btn g" id="t2">ลงทะเบียนครั้งแรก</button></div>
+<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#12060a"><title>เข้าสู่ระบบ</title><link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css"></head><body><div class="login"><div class="lg">
+<div class="lc"><a href="index.html" class="mut">← หน้าแรก</a><h1>ห้องสมุดดิจิทัล<br><em>เปิดแล้ววันนี้</em></h1><p>ยืมหนังสือจากมือถือ รับอีเมลเมื่ออนุมัติ</p><div class="b3w"><div class="b3"><i class="f">ห้องสมุด<br>วท.พัทลุง</i><i class="k"></i><i class="s"></i><i class="p"></i></div></div></div>
+<div class="box" id="bx"><div class="tabs"><button class="btn" id="t1">เข้าสู่ระบบ</button><button class="btn g" id="t2">ลงทะเบียนครั้งแรก</button></div>
 <form id="f1"><label>รหัสนักศึกษา 11 หลัก (หรือชื่อผู้ใช้แอดมิน)</label><input id="id" required><label>รหัสผ่าน (วันเดือนปีเกิด)</label><input id="pw" type="password" required><br><br><button class="btn">เข้าสู่ระบบ</button></form>
-<form id="f2" hidden><label>รหัสนักศึกษา 11 ตัว</label><input id="rid" required pattern="\d{11}" maxlength="11"><div id="ff"></div><br><button class="btn">ยืนยันการสมัคร</button></form><p id="msg" style="color:#ff9aa8;margin-top:12px"></p></div></div>
+<form id="f2" hidden><label>รหัสนักศึกษา 11 ตัว</label><input id="rid" required pattern="\d{11}" maxlength="11"><div id="ff"></div><br><button class="btn">ยืนยันการสมัคร</button></form><p id="msg" style="color:#ff9aa8;margin-top:12px"></p></div></div></div>
 <script src="app.js"></script><script>
-$('#ff').innerHTML=FORM();const sw=a=>{$('#f1').hidden=a;$('#f2').hidden=!a;$('#t1').className='btn'+(a?' g':'');$('#t2').className='btn'+(a?'':' g')};
+$('#ff').innerHTML=FORM();const sw=a=>{$('#f1').hidden=a;$('#f2').hidden=!a;$('#t1').className='btn'+(a?' g':'');$('#t2').className='btn'+(a?'':' g');const f=a?$('#f2'):$('#f1');f.style.animation='none';void f.offsetWidth;f.style.animation='up .45s both'};
 $('#t1').onclick=()=>sw(0);$('#t2').onclick=()=>sw(1);
+const go=u=>{document.body.classList.add('leave');setTimeout(()=>location=u,500)},bad=t=>{$('#msg').textContent=t;const b=$('#bx');b.classList.remove('sh');void b.offsetWidth;b.classList.add('sh')};
 $('#f1').onsubmit=async e=>{e.preventDefault();$('#msg').textContent='';const id=$('#id').value.trim(),pw=$('#pw').value.trim();
-try{if(id==CFG.adminUser){if(await sha(pw)!=CFG.adminHash)throw Error('รหัสผ่านไม่ถูกต้อง');sessionStorage.me=JSON.stringify({role:'admin',name:'ผู้ดูแล'});return location='Admin.html'}
+try{if(id==CFG.adminUser){if(await sha(pw)!=CFG.adminHash)throw Error('รหัสผ่านไม่ถูกต้อง');sessionStorage.me=JSON.stringify({role:'admin',name:'ผู้ดูแล'});return go('Admin.html')}
 const u=(await load('users',{})).d[id];if(!u||u.pw!=await sha(id+':'+pw))throw Error('รหัสนักศึกษาหรือรหัสผ่านไม่ถูกต้อง');
-sessionStorage.me=JSON.stringify({role:'user',id,name:u.first+' '+u.last});location='borrow.html'}catch(x){$('#msg').textContent=x.message}};
+sessionStorage.me=JSON.stringify({role:'user',id,name:u.first+' '+u.last});go('borrow.html')}catch(x){bad(x.message)}};
 $('#f2').onsubmit=async e=>{e.preventDefault();const id=$('#rid').value,g=GET(),pw=await sha(id+':'+g.dob);
-try{await upd('users',{},u=>{if(u[id])throw Error('รหัสนี้ลงทะเบียนแล้ว');u[id]={...g,pw}});alert('สมัครสำเร็จ ใช้รหัสนักศึกษาและวันเดือนปีเกิดเป็นรหัสผ่าน');sw(0)}catch(x){$('#msg').textContent=x.message}};
+try{await upd('users',{},u=>{if(u[id])throw Error('รหัสนี้ลงทะเบียนแล้ว');u[id]={...g,pw}});$('#msg').style.color='#7be0a4';$('#msg').textContent='สมัครสำเร็จ ใช้รหัสนักศึกษาและวันเกิดเป็นรหัสผ่าน';sw(0)}catch(x){$('#msg').style.color='#ff9aa8';bad(x.message)}};
 </script></body></html>
