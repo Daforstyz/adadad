@@ -1,7 +1,7 @@
 <!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>เข้าสู่ระบบ</title><link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css"></head><body><div class="login"><div class="box">
-<h1>ระบบยืม-คืน</h1><div class="tabs noprint"><button class="btn" id="t1">เข้าสู่ระบบ</button><button class="btn g" id="t2">ลงทะเบียนครั้งแรก</button></div>
+<a href="home.html" class="mut">← หน้าแรก</a><h1 style="margin-top:6px">เข้าสู่ระบบ</h1><div class="tabs noprint"><button class="btn" id="t1">เข้าสู่ระบบ</button><button class="btn g" id="t2">ลงทะเบียนครั้งแรก</button></div>
 <form id="f1"><label>รหัสนักศึกษา 11 หลัก (หรือชื่อผู้ใช้แอดมิน)</label><input id="id" required><label>รหัสผ่าน (วันเดือนปีเกิด)</label><input id="pw" type="password" required><br><br><button class="btn">เข้าสู่ระบบ</button></form>
-<form id="f2" hidden><label>รหัสนักศึกษา 11 ตัว</label><input id="rid" required pattern="\d{11}" maxlength="11"><div id="ff"></div><br><button class="btn">ยืนยันการสมัคร</button></form><p id="msg" style="color:#c8102e;margin-top:12px"></p></div></div>
+<form id="f2" hidden><label>รหัสนักศึกษา 11 ตัว</label><input id="rid" required pattern="\d{11}" maxlength="11"><div id="ff"></div><br><button class="btn">ยืนยันการสมัคร</button></form><p id="msg" style="color:#ff9aa8;margin-top:12px"></p></div></div>
 <script src="app.js"></script><script>
 $('#ff').innerHTML=FORM();const sw=a=>{$('#f1').hidden=a;$('#f2').hidden=!a;$('#t1').className='btn'+(a?' g':'');$('#t2').className='btn'+(a?'':' g')};
 $('#t1').onclick=()=>sw(0);$('#t2').onclick=()=>sw(1);

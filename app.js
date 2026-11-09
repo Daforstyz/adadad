@@ -7,7 +7,7 @@ const today=()=>new Date().toISOString().slice(0,10);
 const sha=async s=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)))].map(x=>x.toString(16).padStart(2,'0')).join('');
 const me=()=>JSON.parse(sessionStorage.me||'null');
 function guard(role){const m=me();if(!m||m.role!==role){location='login.html';throw 0}return m}
-function nav(on){const a=me().role=='admin',L=a?[['Admin.html','shield','จัดการระบบ']]:[['index.html','home','ยืม-คืน'],['History.html','clock','ประวัติ'],['Register.html','user','โปรไฟล์']];
+function nav(on){const a=me().role=='admin',L=a?[['home.html','home','หน้าแรก'],['Admin.html','shield','จัดการระบบ']]:[['home.html','home','หน้าแรก'],['index.html','book','ยืม-คืน'],['History.html','clock','ประวัติ'],['Register.html','user','โปรไฟล์']];
 document.body.insertAdjacentHTML('afterbegin',`<header class="top"><b>${ic('book')} ระบบยืมคืน</b>${L.map(([h,i,t])=>`<a class="${h==on?'on':''}" href="${h}">${ic(i)}${t}</a>`).join('')}<button onclick="sessionStorage.clear();location='login.html'">${ic('out')}ออก</button></header>`)}
 /* GitHub as database: data/<name>.json in the repo */
 const TK=()=>{let t=localStorage.ghtk;if(!t){t=(prompt('วาง GitHub token (ขอจากแอดมิน) ใช้ครั้งเดียวต่ออุปกรณ์')||'').trim();if(t)localStorage.ghtk=t}return t};
