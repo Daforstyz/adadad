@@ -30,5 +30,19 @@
   "status": "returned",
   "retDate": "2026-11-09",
   "retNo": "R0002"
+ },
+ {
+  "no": "L0003",
+  "uid": "67219100043",
+  "name": "ฟกฟก ฟกฟฟก",
+  "level": "ปวช3",
+  "group": "ฟกฟก",
+  "dept": "ฟกฟก",
+  "major": "ฟกฟก",
+  "item": "ฟกฟกฟก",
+  "itemId": "B1794193331602",
+  "borrowDate": "2026-11-09",
+  "due": "2026-11-16",
+  "status": "pending"
  }
 ]
